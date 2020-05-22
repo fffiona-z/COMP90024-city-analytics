@@ -6,7 +6,5 @@ ADD . .
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["./entrypoint.sh"]
-
-CMD ["python3", "./run.py"]
+CMD ["python3", "./data_harvester/run.py"]
 
