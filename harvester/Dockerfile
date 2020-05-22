@@ -1,10 +1,10 @@
 FROM python:3.7
 
-WORKDIR ./data_harvester
+WORKDIR ./harvester
 
 ADD . .
 
-RUN pip install -r requirement.txt
+RUN pip install -r requirements.txt
 
-CMD ["python3", "./data_harvester/run.py", "localhost"]
+CMD ["python3", "./data_harvester/run.py"]
 
