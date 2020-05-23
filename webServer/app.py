@@ -29,47 +29,38 @@ aurin_counts_view = ViewDefinition('aurin_data','tags_city_counts', '''\
         return sum(values);
     }''', group=True)
 
-results = []
-aurin = []
+tweets = []
+aurins = []
 
 @app.route('/')
 def home():
     return render_template('home.html')
 
 # communicate to the CouchDB and return the results
-@app.route('/service/<city_name>', methods=['GET'])
-def service(city_name):
-    results = []
+@app.route('/city_analysis/service', methods=['GET'])
+def service():
+    tweets = []
     search_from_db("tweet")
-    tweet_data = search(city_name, results)
-    if len(aurin) == 0:
-        aurin_data = search(city_name, aurin)
-    data = []
-    data.append(tweet_data)
-    data.append(aurin_data)
-    return render_template('home.html', data=simplejson.dumps(data))
+    if len(aurins) == 0:
+        search_from_db("aurin")
+    return render_template('home.html', tweet=simplejson.dumps(tweets), aurin=simplejson.dumps(aurins))
 
 def search_from_db(view):
     if view == "aurin":
         for row in aurin_counts_view(g.couch):
             keys = row.keys()
-            aurin.append(dict(keys[1], row.value))
+            aurins.append(dict(keys[1], row.value))
     elif view == "tweet":
         for row in tweet_counts_view(g.couch):
             keys = row.keys()
-            results.append(dict(keys[1], row.value))
-    
+            tweets.append(dict(keys[1], row.value))
 
-def search(city_name, search_list):
-    for item in search_list:
-        if item.key == city_name:
-            return item
 
 if __name__ == '__main__':
     app.config.update(
         DEBUG = True,
         COUCHDB_SERVER = 'http://admin:12345@localhost:5984/',
-        COUCHDB_DATABASE = ['tweet4', 'aurin_data']
+        COUCHDB_DATABASE = 'tweet4'
     )
     manager = flaskext.couchdb.CouchDBManager()
     manager.setup(app)
