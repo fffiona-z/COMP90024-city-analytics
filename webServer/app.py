@@ -56,6 +56,7 @@ def search_from_db(view):
             tweets.append(dict(keys[1], row.value))
 
 
+
 if __name__ == '__main__':
     app.config.update(
         DEBUG = True,
