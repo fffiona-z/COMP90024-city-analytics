@@ -66,4 +66,4 @@ if __name__ == '__main__':
     manager.setup(app)
     manager.add_viewdef([tweet_counts_view, aurin_counts_view])
     manager.sync(app)
-    app.run(host='0.0.0.0', port=5000, DEBUG=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
