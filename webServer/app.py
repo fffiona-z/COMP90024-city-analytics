@@ -7,7 +7,7 @@ from aurin_load import unemploy,population
 app = Flask(__name__)
 
 # create CouchDB views
-tweet_counts_view = ViewDefinition('tweet4','tags_city_counts', '''\
+tweet_counts_view = ViewDefinition('crime','tags_city_counts', '''\
     function (doc) {
         var crime_related = ["violence", "fraud", "genocide",\
             "addict", "crook", "derelict", "felon", "hooker",\
@@ -114,6 +114,58 @@ tweet_counts_view = ViewDefinition('tweet4','tags_city_counts', '''\
         }
     }''', group=True)
 
+
+tweet_total_view = ViewDefinition('total_number', 'total_city_counts', '''\
+    function (doc) {
+        var cities = ["Darwin", "Palmerston", "Brisbane", "Bundaberg",\
+            "Caboolture", "Cairns", "Caloundra", "Gladstone", "Gold Coast",\
+            "Gympie", "Hervey Bay", "Ipswich", "Logan", "Mackay",\
+            "Maryborough", "Mount Isa", "Rockhampton", "Sunshine Coast",\
+            "Toowoomba", "Townsville", "Adelaide", "Mount BarkerMount",\
+            "Gambier", "Murray Bridge", "Port Adelaide", "Port Augusta",\
+            "Port Pirie", "Port Lincoln", "Victor Harbor", "Whyalla",\
+            "Hobart", "Burnie", "Devonport", "Launceston", "Melbourne",\
+            "Ararat", "Bairnsdale", "Benalla", "Ballarat", "Bendigo",\
+            "Dandenong", "Frankston", "Geelong", "Hamilton", "Horsham",\
+            "Latrobe", "Melton", "Mildura", "Sale", "Shepparton",\
+            "Swan Hill", "Wangaratta", "Warrnambool", "Wodonga", "Perth",\
+            "Albany", "Bunbury", "Busselton", "Fremantle", "Geraldton",\
+            "Joondalup", "Kalgoorlie", "Karratha", "Mandurah", "Rockingham",\
+            "Sydney", "Albury", "Armidale", "Bathurst", "Blue Mountains",\
+            "Broken Hill", "Campbelltown", "Cessnock", "Dubbo", "Goulburn",\
+            "Grafton", "Lithgow", "Liverpool", "Newcastle", "Orange",\
+            "Parramatta", "Penrith", "Queanbeyan", "Tamworth", "Wagga",\
+            "Wollongong"];
+        var check = 0;
+        if(doc.text != null){
+            for(var j = 0; j < cities.length; j++){
+                if(doc.place.name == cities[j])
+                    check = 1;
+            }
+
+            if(check == 1)
+                emit(doc.place.name,1);
+            check = 0;
+        }
+        else if(doc.tweet.text != null){
+            for(var j = 0; j < cities.length; j++){
+                if(doc.tweet.place.name == cities[j])
+                    check = 1;
+            }
+
+            if(check == 1)
+                emit(doc.tweet.place.name,1);
+            check = 0;
+        }
+    }''', '''\
+    function(keys, values, rereduce) {
+        if (rereduce) {
+            return sum(values);
+        } else {
+            return values.length;
+        }
+    }''', group=True)
+
 # @app.errorhandler(400)
 # def not_found(error):
 #     return render_template('400.html')
@@ -134,8 +186,13 @@ def service():
     search_popluation()
     for row in tweet_counts_view(g.couch):
         keys = row.key
-        tweets.append({keys[1] : row.value})   
-    return render_template('home.html', tweet=simplejson.dumps(tweets), unemploy=unemploy, population=population)
+        tweets.append({keys[1] : row.value})
+    
+    tweet_num = []
+    for row in tweet_total_view(g.couch):
+        tweet_num.append({row.key : row.value})        
+    
+    return render_template('home.html', tweet=simplejson.dumps(tweets), unemploy=unemploy, population=population, tweet_num=tweet_num)
 
 def search_unemploy():
     try:
@@ -173,6 +230,6 @@ if __name__ == '__main__':
     )
     manager = flaskext.couchdb.CouchDBManager()
     manager.setup(app)
-    manager.add_viewdef(tweet_counts_view)
+    manager.add_viewdef((tweet_counts_view, tweet_total_view))
     manager.sync(app)
     app.run(host='0.0.0.0', port=5000, debug=True)
