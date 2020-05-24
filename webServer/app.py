@@ -202,7 +202,8 @@ def service():
         'aurin' : simplejson.dumps(unemploy),\
         'population' : simplejson.dumps(population),\
         'tweet_num' : simplejson.dumps(tweet_num) }
-    return jsonify.dumps(data)
+    
+    return data
 
 
 def search_unemploy():
@@ -220,7 +221,7 @@ def search_unemploy():
                         item[city_name] = percent
                         break
     except:
-        abort(404)
+        return render_template('404.html')#abort(404)
 
 def search_popluation():
     try:
@@ -233,8 +234,9 @@ def search_popluation():
                 for item in population:
                     if item.has_key(city_name):
                         item[city_name] = total_num
+                        break
     except:
-        abort(404)
+        return render_template('404.html')#abort(404)
 
 if __name__ == '__main__':
     app.config.update(
