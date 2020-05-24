@@ -19,7 +19,7 @@ class TweetSearchHavester():
     
     def get_all_tweets(self, user_id, api,db_tweet2):
         try:
-            for tweetorig in tweepy.Cursor(api.user_timeline,id = user_id ).items(20):  #use item to adjust the number of tweets waiting to get
+            for tweetorig in tweepy.Cursor(api.user_timeline,id = user_id ).items(80):  #use item to adjust the number of tweets waiting to get
                 tweet = tweetorig._json
                 doc_id = tweet["id_str"]
                 if doc_id not in db_tweet2:
@@ -40,12 +40,12 @@ def run(server_address):
     
     couchserver = couchdb.Server(server_address)
     db_tweet2_name = 'tweet4'
-    print("wwwwwwwwwww")
+
     if db_tweet2_name in couchserver:
         db_tweet2 = couchserver[db_tweet2_name]
     else:
         db_tweet2 = couchserver.create(db_tweet2_name)
-    print("qqqqqqqqqq")
+
     db = couchserver['user']    
     userInList=0;
     pendingUserList = list()
