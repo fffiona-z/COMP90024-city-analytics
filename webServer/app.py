@@ -1,8 +1,8 @@
 from flask import Flask, render_template, redirect, url_for, g, jsonify
 from couchdb.design import ViewDefinition
 import flaskext.couchdb
-import simplejson
-from aurin_load import unemploy,population
+from all_city import default_city
+from copy import deepcopy
 
 app = Flask(__name__)
 
@@ -181,20 +181,24 @@ def home():
 # communicate to the CouchDB and return the results
 @app.route('/city_analysis/service', methods=['GET'])
 def service():
-    tweets = []
+    unemploy = deepcopy(default_city)
+    population = deepcopy(default_city)
     search_unemploy()
     search_popluation()
+    tweets = deepcopy(default_city)
     for row in tweet_counts_view(g.couch):
-        keys = row.key
-        tweets.append({keys[1] : row.value})
+        key = row.key[1]
+        if tweets.has_key(key):
+            tweets[key] = row.value
     
-    tweet_num = []
+    tweet_num = deepcopy(default_city)
     for row in tweet_total_view(g.couch):
-        tweet_num.append({row.key : row.value})        
+        if tweet_num.has_key(row.key):
+            tweet_num[row.key] = row.value      
     
-    data = { 'tweet' : simplejson.dumps(tweets),'aurin' : simplejson.dumps(unemploy),\
-            'population' : simplejson.dumps(population),\
-            'tweet_num' : simplejson.dumps(tweet_num) }
+    data = { 'tweet' : jsonify.dumps(tweets),'aurin' : jsonify.dumps(unemploy),\
+            'population' : jsonify.dumps(population),\
+            'tweet_num' : jsonify.dumps(tweet_num) }
     return data
 
 
@@ -208,10 +212,8 @@ def search_unemploy():
                 percent = feature['properties']['unemploymnt_3_percent']
                 index = city_name.find('(') - 1
                 city_name = city_name[:index]
-                for item in unemploy:
-                    if item.has_key(city_name):
-                        item[city_name] = percent
-                        break
+                if unemploy.has_key(city_name):
+                    unemploy[city_name] = percent
     except:
         return url_for('not_found')
 
@@ -222,11 +224,9 @@ def search_popluation():
             data = doc['data']
             for item in data:
                 city_name = item['asciiname']
-                people = item['population']
-                for pop in population:
-                    if pop.has_key(city_name):
-                        pop[city_name] = people
-                        break
+                total_num = item['population']
+                if population.has_key(city_name):
+                    population[city_name] = total_num
     except:
         return url_for('not_found')
 
