@@ -14,7 +14,7 @@
 	<body style="height:100%">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-3 col-xl-3 d-none d-lg-block d-xl-none">
+				<div class="col-lg-3 col-xl-3 d-none d-lg-block d-xl-block">
 					<div>
 						<ul class="nav flex-column">
 							<li class="nav-item" style="margin-top:20%">
@@ -39,10 +39,10 @@
 					<div class="jumbotron jumbotron-fluid" id="jumbo" style="margin-top: 5%;">
 						<div class="container">
 							<h1 class="display-4">COMP90024 City Analytics</h1>
-							<p class="lead">Tweets about Crimes in Australia form Twitter</p>
+							<p class="lead">Tweets about Crimes in Australia from Twitter</p>
 							<p class="lead">Data about Unemployment rates in Australia from Aurin</p>
 							<p class="lead text-light bg-dark">Bang, see what's happening.</p>
-							<p class="lead float-right" style="margin-top: 5%;">Team: </p>
+							<p class="lead float-right" style="margin-top: 5%;">Team 25: Pengnan Zhao, Fangfei Zheng, Xi Chen, Jingjiahui Lu, Haoran Zhang</p>
 						</div>
 					</div>
 					<div class="container d-lg-none d-xl-none" id="geo" style="margin-top: 7%;">
@@ -167,7 +167,9 @@
 								}
 							]
 						}
-					}
+					},
+					height: 400,
+					width: 600
 				};
 				var map = new google.visualization.Map(document.getElementById('mapchart'));
 
@@ -205,7 +207,9 @@
 						colors: ['#00853f', 'black', '#e31b23']
 					},
 					backgroundColor: '#81d4fa',
-					datalessRegionColor: '#f8bbd0'
+					datalessRegionColor: '#f8bbd0',
+					height: 400,
+					width: 600
 				};
 				var geochart = new google.visualization.GeoChart(document.getElementById('geochart'));
 
@@ -251,7 +255,9 @@
 						textStyle: {
 							fontSize: 14
 						}
-					}
+					},
+					height: 400,
+					width: 600
 				};
 				var bubblechart = new google.visualization.BubbleChart(document.getElementById('bubblechart'));
 				bubblechart.draw(bubble_data, bubble_options);
@@ -284,7 +290,9 @@
 							lineWidth: 7,
 							opacity: 0.3,
 						}
-					}
+					},
+					height: 400,
+					width: 600
 				};
 				var linechart = new google.visualization.ScatterChart(document.getElementById('linechart'));
 				linechart.draw(line_data, line_options);
