@@ -167,7 +167,9 @@
 								}
 							]
 						}
-					}
+					},
+					width: 600,
+					height: 400
 				};
 				var map = new google.visualization.Map(document.getElementById('mapchart'));
 
@@ -205,7 +207,9 @@
 						colors: ['#00853f', 'black', '#e31b23']
 					},
 					backgroundColor: '#81d4fa',
-					datalessRegionColor: '#f8bbd0'
+					datalessRegionColor: '#f8bbd0',
+					width: 600,
+					height: 400
 				};
 				var geochart = new google.visualization.GeoChart(document.getElementById('geochart'));
 
@@ -251,7 +255,9 @@
 						textStyle: {
 							fontSize: 14
 						}
-					}
+					},
+					width: 600,
+			        height: 400
 				};
 				var bubblechart = new google.visualization.BubbleChart(document.getElementById('bubblechart'));
 				bubblechart.draw(bubble_data, bubble_options);
@@ -284,7 +290,9 @@
 							lineWidth: 7,
 							opacity: 0.3,
 						}
-					}
+					},
+					width: 600,
+					height: 400
 				};
 				var linechart = new google.visualization.ScatterChart(document.getElementById('linechart'));
 				linechart.draw(line_data, line_options);
