@@ -18,7 +18,9 @@
 					<div>
 						<ul class="nav flex-column">
 							<li class="nav-item" style="margin-top:20%">
-								<a class="nav-link active text-dark" href="javascript:;" onclick="jump('jumbo')"><h2>Home</h2></a>
+								<a class="nav-link active text-dark" href="javascript:;" onclick="jump('jumbo')">
+									<h2>Home</h2>
+								</a>
 							</li>
 							<li class="nav-item" style="margin-top:30%">
 								<a class="nav-link text-white bg-dark" href="javascript:;" onclick="jump('geo')">Geochart</a>
@@ -42,7 +44,8 @@
 							<p class="lead">Tweets about Crimes in Australia from Twitter</p>
 							<p class="lead">Data about Unemployment rates in Australia from Aurin</p>
 							<p class="lead text-light bg-dark">Bang, see what's happening.</p>
-							<p class="lead float-right" style="margin-top: 5%;">Team 25: Pengnan Zhao, Fangfei Zheng, Xi Chen, Jingjiahui Lu, Haoran Zhang</p>
+							<p class="lead float-right" style="margin-top: 5%;">Team 25: Pengnan Zhao, Fangfei Zheng, Xi Chen, Jingjiahui
+								Lu, Haoran Zhang</p>
 						</div>
 					</div>
 					<div class="container d-lg-none d-xl-none" id="geo" style="margin-top: 7%;">
@@ -90,6 +93,8 @@
 				dataType: 'text',
 				data: {},
 				success: function(data) {
+					let reg = /\\/g;
+					data = data.replace(reg, '');
 					console.log(data);
 					TWEET = JSON.parse(data).tweet;
 					AURIN = JSON.parse(data).aurin;
@@ -115,9 +120,11 @@
 
 				for (var t in TWEETNUM) {
 					for (var key in TWEETNUM[t])
-						map_data.addRow(
-							[key, 'Tweets\' Amounts: ' + TWEETNUM[t][key]]
-						);
+						if (TWEETNUM[t][key] != -1) {
+							map_data.addRow(
+								[key, 'Tweets\' Amounts: ' + TWEETNUM[t][key]]
+							);
+						}
 				}
 
 				var map_options = {
@@ -196,9 +203,11 @@
 
 				for (var t in TWEET) {
 					for (var key in TWEET[t])
-						geochart_data.addRow(
-							[key, TWEET[t][key], AURIN[t][key]]
-						);
+						if (TWEET[t][key] != -1 && AURIN[t][key] != -1) {
+							geochart_data.addRow(
+								[key, TWEET[t][key], AURIN[t][key]]
+							);
+						}
 				}
 				var geo_options = {
 					region: 'AU',
@@ -238,9 +247,11 @@
 
 				for (var t in TWEET) {
 					for (var key in TWEET[t])
-						bubble_data.addRow(
-							[key, POPULATION[t][key], TWEET[t][key], AURIN[t][key]]
-						);
+						if (POPULATION[t][key] != -1 && TWEET[t][key] != -1 && AURIN[t][key] != -1) {
+							bubble_data.addRow(
+								[key, POPULATION[t][key], TWEET[t][key], AURIN[t][key]]
+							);
+						}
 				}
 				var bubble_options = {
 					title: 'Correlation between unemployment rates, crimes ' +
@@ -271,9 +282,11 @@
 
 				for (var t in TWEET) {
 					for (var key in TWEET[t])
-						line_data.addRow(
-							[TWEET[t][key], AURIN[t][key]]
-						);
+						if (TWEET[t][key] != -1 && AURIN[t][key] != -1) {
+							line_data.addRow(
+								[TWEET[t][key], AURIN[t][key]]
+							);
+						}
 				}
 				var line_options = {
 					title: 'Crimes (tweets) vs. Unemployment rates (aurin) in main cities of AU (2020)',
@@ -299,18 +312,19 @@
 			}
 		</script>
 		<script type="text/javascript">
-		 	function jump(tag){
-				document.getElementById("jumbo").classList.add("d-lg-none","d-xl-none");
-				document.getElementById("geo").classList.add("d-lg-none","d-xl-none");
-				document.getElementById("bubble").classList.add("d-lg-none","d-xl-none");
-				document.getElementById("line").classList.add("d-lg-none","d-xl-none");
-				document.getElementById("map").classList.add("d-lg-none","d-xl-none");
-		 		document.getElementById(tag).classList.remove("d-lg-none","d-xl-none");
-		 	}
-		 	function refresh() {
-		 		window.location.reload();
-		 	}
-		 	setInterval('refresh()', 600000);
+			function jump(tag) {
+				document.getElementById("jumbo").classList.add("d-lg-none", "d-xl-none");
+				document.getElementById("geo").classList.add("d-lg-none", "d-xl-none");
+				document.getElementById("bubble").classList.add("d-lg-none", "d-xl-none");
+				document.getElementById("line").classList.add("d-lg-none", "d-xl-none");
+				document.getElementById("map").classList.add("d-lg-none", "d-xl-none");
+				document.getElementById(tag).classList.remove("d-lg-none", "d-xl-none");
+			}
+
+			function refresh() {
+				window.location.reload();
+			}
+			setInterval('refresh()', 600000);
 		</script>
 	</body>
 </html>
