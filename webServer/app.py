@@ -3,6 +3,7 @@ from couchdb.design import ViewDefinition
 import flaskext.couchdb
 from all_city import all_city
 import simplejson
+from copy import deepcopy
 
 app = Flask(__name__)
 
@@ -181,18 +182,18 @@ def home():
 # communicate to the CouchDB and return the results
 @app.route('/city_analysis/service', methods=['GET'])
 def service():
-    unemploy = list(all_city)
-    population = list(all_city)
-    search_unemploy()
-    search_popluation()
-    tweets = list(all_city)
+    unemploy = deepcopy(all_city)
+    population = deepcopy(all_city)
+    search_unemploy(unemploy)
+    search_popluation(population)
+    tweets = deepcopy(all_city)
     for row in tweet_counts_view(g.couch):
         key = row.key[1]
         for tweet in tweets:
             if tweet.has_key(key):
                 tweet[key] = row.value
     
-    tweet_num = list(all_city)
+    tweet_num = deepcopy(all_city)
     for row in tweet_total_view(g.couch):
         for tweet in tweet_num:
             if tweet.has_key(row.key):
@@ -206,7 +207,7 @@ def service():
     return data
 
 
-def search_unemploy():
+def search_unemploy(unemploy):
     try:
         doc = g.couch['0000']
         if doc != None:
@@ -223,7 +224,7 @@ def search_unemploy():
     except:
         return render_template('404.html')#abort(404)
 
-def search_popluation():
+def search_popluation(population):
     try:
         doc = g.couch['1111']
         if doc != None:
