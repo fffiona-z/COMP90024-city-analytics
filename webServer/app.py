@@ -204,8 +204,10 @@ def search_unemploy():
                 percent = feature['properties']['unemploymnt_3_percent']
                 index = city_name.find('(') - 1
                 city_name = city_name[:index]
-                if aurins.has_key(city_name):
-                    aurins[city_name] = percent
+                for item in unemploy:
+                    if item.has_key(city_name):
+                        item[city_name] = percent
+                        break
     except:
         return url_for('not_found')
 
@@ -217,8 +219,10 @@ def search_popluation():
             for item in data:
                 city_name = item['asciiname']
                 people = item['population']
-                if population.has_key(city_name):
-                    population[city_name] = people
+                for pop in population:
+                    if pop.has_key(city_name):
+                        pop[city_name] = people
+                        break
     except:
         return url_for('not_found')
 
