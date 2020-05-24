@@ -2,12 +2,11 @@ from flask import Flask, render_template, redirect, url_for, g, jsonify
 from couchdb.design import ViewDefinition
 import flaskext.couchdb
 import simplejson
-from aurin_load import aurins
+from aurin_load import unemploy,popluation
 
 app = Flask(__name__)
 
 # create CouchDB views
-
 tweet_counts_view = ViewDefinition('tweet4','tags_city_counts', '''\
     function (doc) {
         var crime_related = ["violence", "fraud", "genocide",\
@@ -131,15 +130,13 @@ def home():
 @app.route('/city_analysis/service', methods=['GET'])
 def service():
     tweets = []
-    search_aurin()
+    search_unemploy()
     for row in tweet_counts_view(g.couch):
         keys = row.key
-        print(keys)
-        tweets.append({keys[1] : row.value})
-    return jsonify({'aurin': aurins})
-#    return render_template('home.html', tweet=simplejson.dumps(tweets), aurin=aurins)
+        tweets.append({keys[1] : row.value})   
+    return render_template('home.html', tweet=simplejson.dumps(tweets), unemploy=unemploy, population=population)
 
-def search_aurin():
+def search_unemploy():
     try:
         doc = g.couch['0000']
         if doc != None:
