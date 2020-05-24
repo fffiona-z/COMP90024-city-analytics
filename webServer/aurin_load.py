@@ -1,4 +1,4 @@
-unemploy = {
+unemploy = [
     {"Darwin" : -1},
     {"Palmerston" : -1},
     {"Brisbane" : -1},
@@ -85,9 +85,9 @@ unemploy = {
     {"Tamworth" : -1},
     {"Wagga" : -1},
     {"Wollongong" : -1}
-}
+]
 
-population = {
+population = [
     {"Darwin" : -1},
     {"Palmerston" : -1},
     {"Brisbane" : -1},
@@ -174,4 +174,4 @@ population = {
     {"Tamworth" : -1},
     {"Wagga" : -1},
     {"Wollongong" : -1}
-}
+]

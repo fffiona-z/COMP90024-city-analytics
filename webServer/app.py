@@ -192,7 +192,11 @@ def service():
     for row in tweet_total_view(g.couch):
         tweet_num.append({row.key : row.value})        
     
-    return render_template('home.html', tweet=simplejson.dumps(tweets), unemploy=unemploy, population=population, tweet_num=tweet_num)
+    data = { 'tweet' : simplejson.dumps(tweets),'aurin' : simplejson.dumps(unemploy),\
+            'population' : simplejson.dumps(population),\
+            'tweet_num' : simplejson.dumps(tweet_num) }
+    return data
+
 
 def search_unemploy():
     try:
