@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, g
+from flask import Flask, render_template, redirect, url_for, g, jsonify
 from couchdb.design import ViewDefinition
 import flaskext.couchdb
 import simplejson
@@ -99,11 +99,13 @@ tweet_counts_view = ViewDefinition('tweet4','tags_city_counts', '''\
                         if(doc.tweet.place.name == cities[j])
                             check = 1;
                     }
+                }    
             }
+        
+            if(check == 1)
+                emit(["Topic related to crime",doc.tweet.place.name],1);
+            check = 0;
         }
-        if(check == 1)
-            emit(["Topic related to crime",doc.tweet.place.name],1);
-        check = 0;
     }''', '''\
     function(keys, values, rereduce) {
         if (rereduce) {
@@ -113,15 +115,13 @@ tweet_counts_view = ViewDefinition('tweet4','tags_city_counts', '''\
         }
     }''', group=True)
 
-isSearched = False
-
 # @app.errorhandler(400)
 # def not_found(error):
 #     return render_template('400.html')
 
-# @app.errorhandler(404)
-# def not_found(error):
-#     return render_template('404.html')
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('404.html')
 
 @app.route('/')
 def home():
@@ -131,26 +131,28 @@ def home():
 @app.route('/city_analysis/service', methods=['GET'])
 def service():
     tweets = []
+    search_aurin()
     for row in tweet_counts_view(g.couch):
-        keys = row.keys()
-        tweets.append(dict(keys[1], row.value))
-    if isSearched == False:
-        search_aurin()
-        isSearched = True
-    return render_template('home.html', tweet=simplejson.dumps(tweets), aurin=aurins)
+        keys = row.key
+        print(keys)
+        tweets.append({keys[1] : row.value})
+    return jsonify({'aurin': aurins})
+#    return render_template('home.html', tweet=simplejson.dumps(tweets), aurin=aurins)
 
 def search_aurin():
-    doc = g.couch('0000')
-    if doc != None:
-        features = doc['features']
-        for feature in features:
-            city_name = feature['properties']['lga_name']
-            percent = feature['properties']['unemploymnt_3_percent']
-            index = city_name.find('(') - 1
-            city_name = city_name[:index]
-            if aurins.has_key(city_name) != None:
-                aurins[city_name] = percent
-
+    try:
+        doc = g.couch['0000']
+        if doc != None:
+            features = doc['features']
+            for feature in features:
+                city_name = feature['properties']['lga_name']
+                percent = feature['properties']['unemploymnt_3_percent']
+                index = city_name.find('(') - 1
+                city_name = city_name[:index]
+                if aurins.has_key(city_name):
+                    aurins[city_name] = percent
+    except:
+        return url_for('not_found')
 
 if __name__ == '__main__':
     app.config.update(
