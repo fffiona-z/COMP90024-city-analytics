@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, g, jsonify
 from couchdb.design import ViewDefinition
 import flaskext.couchdb
 import simplejson
-from aurin_load import unemploy,popluation
+from aurin_load import unemploy,population
 
 app = Flask(__name__)
 
@@ -131,6 +131,7 @@ def home():
 def service():
     tweets = []
     search_unemploy()
+    search_popluation()
     for row in tweet_counts_view(g.couch):
         keys = row.key
         tweets.append({keys[1] : row.value})   
@@ -148,6 +149,19 @@ def search_unemploy():
                 city_name = city_name[:index]
                 if aurins.has_key(city_name):
                     aurins[city_name] = percent
+    except:
+        return url_for('not_found')
+
+def search_popluation():
+    try:
+        doc = g.couch['1111']
+        if doc != None:
+            data = doc['data']
+            for item in data:
+                city_name = item['asciiname']
+                people = item['population']
+                if population.has_key(city_name):
+                    population[city_name] = people
     except:
         return url_for('not_found')
 

@@ -88,7 +88,7 @@ unemploy = {
     "Wollongong" : -1
 }
 
-popluation = {
+population = {
     "Darwin" : -1,
     "Palmerston" : -1,
     "Brisbane" : -1,
