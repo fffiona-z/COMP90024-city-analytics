@@ -86,5 +86,7 @@ default_city = {
     "Wagga" : -1,
     "Wollongong" : -1
 }
-default_city = sorted(default_city.keys())
-
+default_city = sorted(default_city, key=lambda k:k[0])
+all_city = []
+for city in default_city:
+    all_city.append({city : -1})

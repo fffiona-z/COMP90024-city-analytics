@@ -1,8 +1,8 @@
-from flask import Flask, render_template, redirect, url_for, g, jsonify
+from flask import Flask, render_template, abort, url_for, g, jsonify
 from couchdb.design import ViewDefinition
 import flaskext.couchdb
-from all_city import default_city
-from copy import deepcopy
+from all_city import all_city
+import simplejson
 
 app = Flask(__name__)
 
@@ -181,25 +181,28 @@ def home():
 # communicate to the CouchDB and return the results
 @app.route('/city_analysis/service', methods=['GET'])
 def service():
-    unemploy = deepcopy(default_city)
-    population = deepcopy(default_city)
+    unemploy = list(all_city)
+    population = list(all_city)
     search_unemploy()
     search_popluation()
-    tweets = deepcopy(default_city)
+    tweets = list(all_city)
     for row in tweet_counts_view(g.couch):
         key = row.key[1]
-        if tweets.has_key(key):
-            tweets[key] = row.value
+        for tweet in tweets:
+            if tweet.has_key(key):
+                tweet[key] = row.value
     
-    tweet_num = deepcopy(default_city)
+    tweet_num = list(all_city)
     for row in tweet_total_view(g.couch):
-        if tweet_num.has_key(row.key):
-            tweet_num[row.key] = row.value      
+        for tweet in tweet_num:
+            if tweet.has_key(row.key):
+                tweet[row.key] = row.value     
     
-    data = { 'tweet' : jsonify.dumps(tweets),'aurin' : jsonify.dumps(unemploy),\
-            'population' : jsonify.dumps(population),\
-            'tweet_num' : jsonify.dumps(tweet_num) }
-    return data
+    data = { 'tweet' : simplejson.dumps(tweets),\
+        'aurin' : simplejson.dumps(unemploy),\
+        'population' : simplejson.dumps(population),\
+        'tweet_num' : simplejson.dumps(tweet_num) }
+    return jsonify.dumps(data)
 
 
 def search_unemploy():
@@ -212,10 +215,12 @@ def search_unemploy():
                 percent = feature['properties']['unemploymnt_3_percent']
                 index = city_name.find('(') - 1
                 city_name = city_name[:index]
-                if unemploy.has_key(city_name):
-                    unemploy[city_name] = percent
+                for item in unemploy:
+                    if item.has_key(city_name):
+                        item[city_name] = percent
+                        break
     except:
-        return url_for('not_found')
+        abort(404)
 
 def search_popluation():
     try:
@@ -225,10 +230,11 @@ def search_popluation():
             for item in data:
                 city_name = item['asciiname']
                 total_num = item['population']
-                if population.has_key(city_name):
-                    population[city_name] = total_num
+                for item in population:
+                    if item.has_key(city_name):
+                        item[city_name] = total_num
     except:
-        return url_for('not_found')
+        abort(404)
 
 if __name__ == '__main__':
     app.config.update(
