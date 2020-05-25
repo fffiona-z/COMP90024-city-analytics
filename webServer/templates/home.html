@@ -282,7 +282,7 @@
 					for (var key in TWEET[t])
 						if (TWEET[t][key] != -1 && AURIN[t][key] != -1) {
 							line_data.addRow(
-								[TWEET[t][key], AURIN[t][key]]
+								[(TWEET[t][key]/TWEETNUM[t][key]).toFixed(2), AURIN[t][key]]
 							);
 						}
 				}
