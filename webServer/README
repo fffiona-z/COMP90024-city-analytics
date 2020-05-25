@@ -1,0 +1,5 @@
+This file is to describe how to deploy the web server in the instance.
+
+When you move into the /COMP90024-city-analytics/webServer folder, type the command './run.sh' in your command line to run the server.
+
+When you see 'Server is running', it means the server starts running successfully.
