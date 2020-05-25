@@ -38,13 +38,13 @@
 					</div>
 				</div>
 				<div class="col-lg col-xl">
-					<div class="jumbotron jumbotron-fluid" id="jumbo" style="margin-top: 5%;">
+					<div class="jumbotron jumbotron-fluid" id="jumbo" style="margin-top: 5%; ">
 						<div class="container">
 							<h1 class="display-4">COMP90024 City Analytics</h1>
 							<p class="lead">Tweets about Crimes in Australia from Twitter</p>
 							<p class="lead">Data about Unemployment rates in Australia from Aurin</p>
 							<p class="lead text-light bg-dark">Bang, see what's happening.</p>
-							<p class="lead float-right" style="margin-top: 5%;">Team 25: Pengnan Zhao, Fangfei Zheng, Xi Chen, Jingjiahui
+							<p class="lead float-right" style="margin-top: 4%;">Team 25: Pengnan Zhao, Fangfei Zheng, Xi Chen, Jingjiahui
 								Lu, Haoran Zhang</p>
 						</div>
 					</div>
@@ -203,7 +203,7 @@
 					for (var key in TWEET[t])
 						if (TWEET[t][key] != -1 && AURIN[t][key] != -1) {
 							geochart_data.addRow(
-								[key, TWEET[t][key], AURIN[t][key]]
+								[key, TWEET[t][key], parseFloat((AURIN[t][key]/100).toFixed(3))]
 							);
 						}
 				}
@@ -247,7 +247,7 @@
 					for (var key in TWEET[t])
 						if (POPULATION[t][key] != -1 && TWEET[t][key] != -1 && AURIN[t][key] != -1) {
 							bubble_data.addRow(
-								[key, POPULATION[t][key], TWEET[t][key], AURIN[t][key]]
+								[key, POPULATION[t][key], TWEET[t][key], parseFloat((AURIN[t][key]/100).toFixed(3))]
 							);
 						}
 				}
@@ -275,24 +275,25 @@
 			function drawLineChart() {
 				var line_data = new google.visualization.DataTable();
 
-				line_data.addColumn('number', 'Crimes');
-				line_data.addColumn('number', 'Unemployment rate');
+				line_data.addColumn('number', 'Crimes/Tweets\' Amount');
+				line_data.addColumn('number', 'Unemployment Rate');
 
 				for (var t in TWEET) {
 					for (var key in TWEET[t])
 						if (TWEET[t][key] != -1 && AURIN[t][key] != -1) {
 							line_data.addRow(
-								[parseFloat((TWEET[t][key]/TWEETNUM[t][key]).toFixed(2)), AURIN[t][key]]
+								[parseFloat((TWEET[t][key]/TWEETNUM[t][key]).toFixed(2)), 
+								 parseFloat((AURIN[t][key]/100).toFixed(3))]
 							);
 						}
 				}
 				var line_options = {
-					title: 'Crimes (tweets) vs. Unemployment rates (aurin) in main cities of AU (2020)',
+					title: 'Crimes/Tweets\' amounts vs. Unemployment Rates (aurin) in Main Cities of Australia (2020)',
 					hAxis: {
-						title: 'Crimes (tweets)'
+						title: 'Crimes/Tweets\' Amount)'
 					},
 					vAxis: {
-						title: 'Unemployment rates (aurin)'
+						title: 'Unemployment Rates (Aurin)'
 					},
 					legend: 'none',
 					trendlines: {
