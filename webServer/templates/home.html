@@ -94,12 +94,10 @@
 				async: false,
 				data: {},
 				success: function(data) {
-					console.log(data);
 					TWEET = JSON.parse(data.tweet);
 					AURIN = JSON.parse(data.aurin);
 					POPULATION = JSON.parse(data.population);
 					TWEETNUM = JSON.parse(data.tweet_num);
-					console.log(TWEET);
 				}
 			});
 
@@ -118,21 +116,18 @@
 				map_data.addColumn('string', 'City');
 				map_data.addColumn('string', 'Tweets_Number');
 				
-				console.log(TWEETNUM);
 				for (var t in TWEETNUM) {				
 					for (var key in TWEETNUM[t])
-						console.log(TWEETNUM[t]);
-						console.log(TWEETNUM[t][key]);
 						if (TWEETNUM[t][key] != -1) {
 							map_data.addRow(
-								[key, 'Tweets\' Amounts: ' + TWEETNUM[t][key]]
+								[key, key+' Tweets\' Amounts: ' + TWEETNUM[t][key]]
 							);
 						}
 				}
 
 				var map_options = {
 					mapType: 'styledMap',
-					zoomLevel: 3,
+					zoomLevel: 4,
 					showTooltip: true,
 					showInfoWindow: true,
 					useMapTypeControl: true,
