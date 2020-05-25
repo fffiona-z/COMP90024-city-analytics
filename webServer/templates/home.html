@@ -90,16 +90,16 @@
 				type: "get",
 				url: "/city_analysis/service",
 				contentType: "application/json; charset=utf-8",
-				dataType: 'text',
+				dataType: 'json',
 				data: {},
 				success: function(data) {
 					let reg = /\\/g;
 					data = data.replace(reg, '');
 					console.log(data);
-					TWEET = JSON.parse(data).tweet;
-					AURIN = JSON.parse(data).aurin;
-					POPULATION = JSON.parse(data).population;
-					TWEETNUM = JSON.parse(data).tweet_num;
+					TWEET = data.tweet;
+					AURIN = data.aurin;
+					POPULATION = data.population;
+					TWEETNUM = data.tweet_num;
 				}
 			});
 
