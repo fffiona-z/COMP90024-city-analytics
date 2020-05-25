@@ -1,5 +1,7 @@
 This file is to describe how to deploy the nginx server and config the server to achieve the load balance.
 
+
+
 When you move into the /COMP90024-city-analytics/nginx folder:
 
 First of all, based on the new assigned ip address of other three instances, change the content of the nginx.conf file.
