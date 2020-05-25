@@ -95,10 +95,11 @@
 				data: {},
 				success: function(data) {
 					console.log(data);
-					TWEET = data.tweet;
-					AURIN = data.aurin;
-					POPULATION = data.population;
-					TWEETNUM = data.tweet_num;
+					console.log(JSON.parse(data));
+					TWEET = JSON.parse(data).tweet;
+					AURIN = JSON.parse(data).aurin;
+					POPULATION = JSON.parse(data).population;
+					TWEETNUM = JSON.parse(data).tweet_num;
 				}
 			});
 
