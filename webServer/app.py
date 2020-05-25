@@ -222,7 +222,7 @@ def search_unemploy(unemploy):
                         item[city_name] = percent
                         break
     except:
-        return render_template('404.html')#abort(404)
+        abort(404)
 
 def search_popluation(population):
     try:
@@ -237,11 +237,11 @@ def search_popluation(population):
                         item[city_name] = total_num
                         break
     except:
-        return render_template('404.html')#abort(404)
+        abort(404)
 
 if __name__ == '__main__':
     app.config.update(
-        DEBUG = True,
+        DEBUG = False,
         COUCHDB_SERVER = 'http://admin:12345@localhost:5984/',
         COUCHDB_DATABASE = 'tweet4'
     )
@@ -249,4 +249,4 @@ if __name__ == '__main__':
     manager.setup(app)
     manager.add_viewdef((tweet_counts_view, tweet_total_view))
     manager.sync(app)
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=False)
