@@ -26,10 +26,10 @@
 								<a class="nav-link text-white bg-dark" href="javascript:;" onclick="jump('geo')">Geochart</a>
 							</li>
 							<li class="nav-item" style="margin-top:30%">
-								<a class="nav-link text-white bg-dark" href="javascript:;" onclick="jump('bubble')">Bubble chart</a>
+								<a class="nav-link text-white bg-dark" href="javascript:;" onclick="jump('bubble')">Bubble Chart</a>
 							</li>
 							<li class="nav-item" style="margin-top:30%">
-								<a class="nav-link text-white bg-dark" href="javascript:;" onclick="jump('line')">Trendline</a>
+								<a class="nav-link text-white bg-dark" href="javascript:;" onclick="jump('scatter')">Scatter Chart</a>
 							</li>
 							<li class="nav-item" style="margin-top:30%">
 								<a class="nav-link text-white bg-dark" href="javascript:;" onclick="jump('map')">Map</a>
@@ -64,12 +64,12 @@
 						</div>
 						<div id="bubblechart"></div>
 					</div>
-					<div class="container d-lg-none d-xl-none" id="line" style="height: 70%;width: 100%;margin-top: 7%;">
+					<div class="container d-lg-none d-xl-none" id="scatter" style="height: 70%;width: 100%;margin-top: 7%;">
 						<div>
-							<h2 class="display-4">Trendline</h2>
+							<h2 class="display-4">Scatter Chart</h2>
 							<p class="lead">Explore the correlation between crimes and unemployment rates in Australia main cities</p>
 						</div>
-						<div id="linechart"></div>
+						<div id="scatterchart"></div>
 					</div>
 					<div class="container d-lg-none d-xl-none" id="map" style="margin-top: 7%;">
 						<div>
@@ -108,7 +108,7 @@
 			google.charts.setOnLoadCallback(drawMap);
 			google.charts.setOnLoadCallback(drawGeoChart);
 			google.charts.setOnLoadCallback(drawBubbleChart);
-			google.charts.setOnLoadCallback(drawLineChart);
+			google.charts.setOnLoadCallback(drawScatterChart);
 
 			function drawMap() {
 				var map_data = new google.visualization.DataTable();
@@ -197,7 +197,7 @@
 
 				geochart_data.addColumn('string', 'City');
 				geochart_data.addColumn('number', 'Crimes');
-				geochart_data.addColumn('number', 'Unemployment rate');
+				geochart_data.addColumn('number', 'Unemployment Rate');
 
 				for (var t in TWEET) {
 					for (var key in TWEET[t])
@@ -241,7 +241,7 @@
 				bubble_data.addColumn('string', 'City');
 				bubble_data.addColumn('number', 'Population');
 				bubble_data.addColumn('number', 'Crimes');
-				bubble_data.addColumn('number', 'Unemployment rate');
+				bubble_data.addColumn('number', 'Unemployment Rate');
 
 				for (var t in TWEET) {
 					for (var key in TWEET[t])
@@ -272,42 +272,35 @@
 				bubblechart.draw(bubble_data, bubble_options);
 			}
 
-			function drawLineChart() {
-				var line_data = new google.visualization.DataTable();
+			function drawScatterChart() {
+				var scatter_data = new google.visualization.DataTable();
 
-				line_data.addColumn('number', 'Crimes/Tweets\' Amount');
-				line_data.addColumn('number', 'Unemployment Rate');
+				scatter_data.addColumn('number', 'Crimes/Tweets\' Amount');
+				scatter_data.addColumn('number', 'Unemployment Rate');
 
 				for (var t in TWEET) {
 					for (var key in TWEET[t])
 						if (TWEET[t][key] != -1 && AURIN[t][key] != -1) {
-							line_data.addRow(
+							scatter_data.addRow(
 								[parseFloat((TWEET[t][key]/TWEETNUM[t][key]).toFixed(2)), 
 								 parseFloat((AURIN[t][key]/100).toFixed(3))]
 							);
 						}
 				}
-				var line_options = {
+				var scatter_options = {
 					title: 'Crimes/Tweets\' amounts vs. Unemployment Rates (aurin) in Main Cities of Australia (2020)',
 					hAxis: {
-						title: 'Crimes/Tweets\' Amount)'
+						title: 'Crimes/Tweets\' Amount'
 					},
 					vAxis: {
 						title: 'Unemployment Rates (Aurin)'
 					},
 					legend: 'none',
-					trendlines: {
-						0: {
-							color: '#666699',
-							lineWidth: 7,
-							opacity: 0.3,
-						}
-					},
 					height: 500,
 					width: 700
 				};
-				var linechart = new google.visualization.ScatterChart(document.getElementById('linechart'));
-				linechart.draw(line_data, line_options);
+				var linechart = new google.visualization.ScatterChart(document.getElementById('scatterchart'));
+				linechart.draw(scatter_data, scatter_options);
 			}
 		</script>
 		<script type="text/javascript">
@@ -315,7 +308,7 @@
 				document.getElementById("jumbo").classList.add("d-lg-none", "d-xl-none");
 				document.getElementById("geo").classList.add("d-lg-none", "d-xl-none");
 				document.getElementById("bubble").classList.add("d-lg-none", "d-xl-none");
-				document.getElementById("line").classList.add("d-lg-none", "d-xl-none");
+				document.getElementById("scatter").classList.add("d-lg-none", "d-xl-none");
 				document.getElementById("map").classList.add("d-lg-none", "d-xl-none");
 				document.getElementById(tag).classList.remove("d-lg-none", "d-xl-none");
 			}
