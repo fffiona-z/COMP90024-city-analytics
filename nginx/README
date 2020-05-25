@@ -1,0 +1,12 @@
+This file is to describe how to deploy the nginx server and config the server to achieve the load balance.
+
+When you move into the /COMP90024-city-analytics/nginx folder:
+
+First of all, based on the new assigned ip address of other three instances, change the content of the nginx.conf file.
+
+Replace the ip address behind the 'server' property in the 'upstream' structure with new assigned ip address and keep the port same.
+
+Then, type the command './nginx_run.sh' in your command line to run the server.
+
+When you see 'nginx' in the last line of the printed logs, it means the server start running successfully.
+
