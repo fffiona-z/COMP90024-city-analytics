@@ -96,10 +96,10 @@
 				success: function(data) {
 					console.log(data);
 					console.log(JSON.parse(data));
-					TWEET = JSON.parse(data).tweet;
-					AURIN = JSON.parse(data).aurin;
-					POPULATION = JSON.parse(data).population;
-					TWEETNUM = JSON.parse(data).tweet_num;
+					TWEET = JSON.parse(JSON.parse(data).tweet);
+					AURIN = JSON.parse(JSON.parse(data).aurin);
+					POPULATION = JSON.parse(JSON.parse(data).population);
+					TWEETNUM = JSON.parse(JSON.parse(data).tweet_num);
 				}
 			});
 
