@@ -93,8 +93,6 @@
 				dataType: 'json',
 				data: {},
 				success: function(data) {
-					// let reg = /\\/g;
-					// data = data.replace(reg, '');
 					console.log(data);
 					TWEET = data.tweet;
 					AURIN = data.aurin;
@@ -117,9 +115,12 @@
 
 				map_data.addColumn('string', 'City');
 				map_data.addColumn('string', 'Tweets_Number');
-
-				for (var t in TWEETNUM) {
+				
+				console.log(TWEETNUM);
+				for (var t in TWEETNUM) {				
 					for (var key in TWEETNUM[t])
+						console.log(TWEETNUM[t]);
+						console.log(TWEETNUM[t][key]);
 						if (TWEETNUM[t][key] != -1) {
 							map_data.addRow(
 								[key, 'Tweets\' Amounts: ' + TWEETNUM[t][key]]
