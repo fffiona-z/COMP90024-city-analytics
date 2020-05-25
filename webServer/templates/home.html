@@ -173,8 +173,8 @@
 							]
 						}
 					},
-					height: 400,
-					width: 600
+					height: 500,
+					width: 700
 				};
 				var map = new google.visualization.Map(document.getElementById('mapchart'));
 
@@ -197,7 +197,7 @@
 
 				geochart_data.addColumn('string', 'City');
 				geochart_data.addColumn('number', 'Crimes');
-				geochart_data.addColumn('number', 'Unemployments');
+				geochart_data.addColumn('number', 'Unemployment rate');
 
 				for (var t in TWEET) {
 					for (var key in TWEET[t])
@@ -215,8 +215,8 @@
 					},
 					backgroundColor: '#81d4fa',
 					datalessRegionColor: '#f8bbd0',
-					height: 400,
-					width: 600
+					height: 500,
+					width: 700
 				};
 				var geochart = new google.visualization.GeoChart(document.getElementById('geochart'));
 
@@ -241,7 +241,7 @@
 				bubble_data.addColumn('string', 'City');
 				bubble_data.addColumn('number', 'Population');
 				bubble_data.addColumn('number', 'Crimes');
-				bubble_data.addColumn('number', 'Unemployments');
+				bubble_data.addColumn('number', 'Unemployment rate');
 
 				for (var t in TWEET) {
 					for (var key in TWEET[t])
@@ -265,8 +265,8 @@
 							fontSize: 14
 						}
 					},
-					height: 400,
-					width: 600
+					height: 500,
+					width: 700
 				};
 				var bubblechart = new google.visualization.BubbleChart(document.getElementById('bubblechart'));
 				bubblechart.draw(bubble_data, bubble_options);
@@ -276,7 +276,7 @@
 				var line_data = new google.visualization.DataTable();
 
 				line_data.addColumn('number', 'Crimes');
-				line_data.addColumn('number', 'Unemployments');
+				line_data.addColumn('number', 'Unemployment rate');
 
 				for (var t in TWEET) {
 					for (var key in TWEET[t])
@@ -302,8 +302,8 @@
 							opacity: 0.3,
 						}
 					},
-					height: 400,
-					width: 600
+					height: 500,
+					width: 700
 				};
 				var linechart = new google.visualization.ScatterChart(document.getElementById('linechart'));
 				linechart.draw(line_data, line_options);
