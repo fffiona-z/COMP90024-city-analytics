@@ -1,5 +1,7 @@
 This file is to describe how to deploy the Data Harvester program in the instance.
 
+
+
 When you move into the /COMP90024-city-analytics/harvester folder, type the command './run.sh' in your command line to run the program.
 
 When you see 'Start running ...', it means the program starts running successfully.
