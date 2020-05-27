@@ -1,3 +1,11 @@
+
+    // author: Group25
+    //         Fangfei Zheng 965378 (China)
+    //         Jingjiahui Lu 966172 (Melb)
+    //         Xi Chen 983241(China)
+    //         Haoran Zhang 960374 (China)
+    //         Pengnan Zhao 883338(China)
+ 
 function (doc) {
   var crime_related = ["violence","fraud","genocide","addict","crook","derelict","felon",
                        "hooker","hustler","junkie","miscreant","panhandler","suspect","thief","thugs","vandal",

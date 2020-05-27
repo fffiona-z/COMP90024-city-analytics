@@ -1,3 +1,13 @@
+'''
+    author: Group25
+            Fangfei Zheng 965378 (China)
+            Jingjiahui Lu 966172 (Melb)
+            Xi Chen 983241(China)
+            Haoran Zhang 960374 (China)
+            Pengnan Zhao 883338(China)
+
+'''
+
 from flask import Flask, render_template, abort, url_for, g, jsonify
 from couchdb.design import ViewDefinition
 import flaskext.couchdb

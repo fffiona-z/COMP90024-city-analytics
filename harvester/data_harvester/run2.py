@@ -2,6 +2,13 @@
 """
 Created on Thu May 21 14:11:18 2020
 
+author: Group25
+        Fangfei Zheng 965378 (China)
+        Jingjiahui Lu 966172 (Melb)
+        Xi Chen 983241(China)
+        Haoran Zhang 960374 (China)
+        Pengnan Zhao 883338(China)
+
 """
 import time
 import twitter_search
