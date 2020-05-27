@@ -1,4 +1,4 @@
-#!bin/sh
+#!/bin/sh
 
 sudo docker pull nginx
 sudo docker run --name nginx -p 8080:80 -d nginx
